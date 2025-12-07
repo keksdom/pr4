@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/script.js"></script>
+    <title>Фітнес-калькулятор</title>
+    
+</head>
+<body>
+    <div class="container">
+        <h2>Фітнес-калькулятор</h2>
+
+        <label>Зріст (м):</label>
+        <input type="number" id="height" step="0.01" placeholder="1.75" />
+
+        <label>Вага (кг):</label>
+        <input type="number" id="weight" placeholder="70" />
+
+        <label>Рівень активності:</label>
+        <select id="activity">
+            <option value="">(не вказано)</option>
+            <option value="низький">Низький</option>
+            <option value="середній">Середній</option>
+            <option value="високий">Високий</option>
+        </select>
+
+        <label>Цільова вага (кг):</label>
+        <input type="number" id="targetWeight" placeholder="65" />
+
+        <label>Нормальна вага (кг):</label>
+        <input type="number" id="normalWeight" placeholder="75" />
+
+        <button onclick="calculate()">Розрахувати</button>
+
+        <div id="result">
+            <div class="icon-row" style="display:flex; gap:12px; margin-bottom:15px;">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                </svg>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 12h16" />
+                    <path d="M4 6h16" />
+                    <path d="M4 18h16" />
+                </svg>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3" />
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8 4.6c.29-.05.55-.05.82-.02H9a2 2 0 1 1 4 0h-.09c.27-.03.53-.03.82.02a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 8c.29.29.51.63.66 1H21a2 2 0 1 1 0 4h-.09c-.15.37-.37.71-.66 1z" />
+                </svg>
+            </div>
+            <div class="progress-bar"><div id="bmiBar" class="progress-fill"></div></div></div>
+    </div>
+
+    <style>
+        .progress-bar {
+            width: 100%;
+            background: #3a3a3a;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 8px 0 16px 0;
+        }
+        .progress-fill {
+            height: 12px;
+            width: 0;
+            background: #4a90e2;
+            transition: width 1s ease;
+        }
+        .icon {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            margin-right: 6px;
+        }
+    </style>
+
+    <script>
+        function animateProgress(id, value) {
+            document.getElementById(id).style.width = value + "%";
+        }
+
+        const oldCalc = calculate;
+        calculate = function() {
+            oldCalc();
+            
+            let bmi = parseFloat(document.querySelector('#result p:nth-child(2)').innerText.split(': ')[1]);
+            let bmiPercent = Math.min((bmi / 30) * 100, 100);
+
+            setTimeout(() => animateProgress("bmiBar", bmiPercent), 150);
+        }
+    </script>
+
+</body>
+</html>
