@@ -1,95 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/style.css">
-    <script defer src="js/script.js"></script>
-    <title>Фітнес-калькулятор</title>
-    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" href="css/style.css">
+<title>Детективна комедія — Генератор історій (UA, сатирa)</title>
+<script defer src="js/script.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h2>Фітнес-калькулятор</h2>
+<div class="wrap">
+  <div class="card">
+    <h1>Детективна комедія — налаштувати героя</h1>
+    <label>Ім'я детектива</label>
+    <input id="name" type="text" placeholder="Наприклад: Тарас Катигорошко" />
 
-        <label>Зріст (м):</label>
-        <input type="number" id="height" step="0.01" placeholder="1.75" />
+    <label>Сила (1–10)</label>
+    <input id="strength" type="number" min="1" max="10" value="5" />
 
-        <label>Вага (кг):</label>
-        <input type="number" id="weight" placeholder="70" />
+    <label>Харизма (1–10)</label>
+    <input id="charisma" type="number" min="1" max="10" value="6" />
 
-        <label>Рівень активності:</label>
-        <select id="activity">
-            <option value="">(не вказано)</option>
-            <option value="низький">Низький</option>
-            <option value="середній">Середній</option>
-            <option value="високий">Високий</option>
-        </select>
+    <label>Удача (1–10)</label>
+    <input id="luck" type="number" min="1" max="10" value="5" />
 
-        <label>Цільова вага (кг):</label>
-        <input type="number" id="targetWeight" placeholder="65" />
+    <label>Інтелект (1–10)</label>
+    <input id="intellect" type="number" min="1" max="10" value="6" />
 
-        <label>Нормальна вага (кг):</label>
-        <input type="number" id="normalWeight" placeholder="75" />
-
-        <button onclick="calculate()">Розрахувати</button>
-
-        <div id="result">
-            <div class="icon-row" style="display:flex; gap:12px; margin-bottom:15px;">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10" />
-                    <polyline points="12 6 12 12 16 14" />
-                </svg>
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 12h16" />
-                    <path d="M4 6h16" />
-                    <path d="M4 18h16" />
-                </svg>
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="3" />
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8 4.6c.29-.05.55-.05.82-.02H9a2 2 0 1 1 4 0h-.09c.27-.03.53-.03.82.02a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 8c.29.29.51.63.66 1H21a2 2 0 1 1 0 4h-.09c-.15.37-.37.71-.66 1z" />
-                </svg>
-            </div>
-            <div class="progress-bar"><div id="bmiBar" class="progress-fill"></div></div></div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button id="genBtn">Згенерувати справу</button>
+      <button id="resetBtn" style="background:#2b2f36">Скинути</button>
     </div>
 
-    <style>
-        .progress-bar {
-            width: 100%;
-            background: #3a3a3a;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 8px 0 16px 0;
-        }
-        .progress-fill {
-            height: 12px;
-            width: 0;
-            background: #4a90e2;
-            transition: width 1s ease;
-        }
-        .icon {
-            display: inline-block;
-            width: 22px;
-            height: 22px;
-            margin-right: 6px;
-        }
-    </style>
+    <div style="margin-top:12px">
+      <div class="muted">Короткі характеристики</div>
+      <div class="stat-row" id="statsPreview"></div>
+      <div class="progress" title="Інтуїція"><div id="intuitionBar" class="bar" style="width:0"></div></div>
+      <div class="muted small" id="caseBrief" style="min-height:36px"></div>
+    </div>
+  </div>
 
-    <script>
-        function animateProgress(id, value) {
-            document.getElementById(id).style.width = value + "%";
-        }
+  <div class="card">
+    <h1>Хід справи</h1>
+    <div id="log">
+      <div class="muted">Ще немає справи — згенеруйте її та натисніть дії внизу.</div>
+    </div>
 
-        const oldCalc = calculate;
-        calculate = function() {
-            oldCalc();
-            
-            let bmi = parseFloat(document.querySelector('#result p:nth-child(2)').innerText.split(': ')[1]);
-            let bmiPercent = Math.min((bmi / 30) * 100, 100);
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <button id="inspectBtn" disabled>🕵️ Оглянути місце</button>
+      <button id="interviewBtn" disabled>🗣️ Допитати підозрюваного</button>
+      <button id="clueBtn" disabled>🔎 Перевірити докази</button>
+    </div>
 
-            setTimeout(() => animateProgress("bmiBar", bmiPercent), 150);
-        }
-    </script>
+    <div id="finalResult" class="result" style="display:none"></div>
+  </div>
+</div>
+
+<footer>Детективна сатира — іронія на музеї, чиновників та кумівство. Звуки — комедійні.</footer>
 
 </body>
 </html>
